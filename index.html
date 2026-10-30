@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laundry</title>
+<style>
+:root{--bg:#eef9ff;--card:#fff;--tx:#0b2a3c;--mut:#587a8e;--bd:#d3e8f3;--red:#ef4444;--amb:#f59e0b;--grn:#22c55e;--blu:#3b82f6;--acc:#0284c7;--sh:0 8px 24px rgba(2,100,150,.09);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#082230;--card:#0e3446;--tx:#e8f7fd;--mut:#8db6c8;--bd:#1d4a5e;--acc:#38bdf8;--sh:0 8px 24px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#082230;--card:#0e3446;--tx:#e8f7fd;--mut:#8db6c8;--bd:#1d4a5e;--acc:#38bdf8;--sh:0 8px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;color:var(--tx);font:16px/1.45 "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(900px 420px at 50% -160px,rgba(14,165,233,.14),transparent),radial-gradient(700px 400px at 100% 100%,rgba(2,132,199,.07),transparent),var(--bg)}
+.app{max-width:640px;margin:0 auto;padding:16px 14px 28px;position:relative;z-index:1}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:18px;margin-bottom:14px;box-shadow:var(--sh);overflow:hidden}
+.box.banner{border:0;background:linear-gradient(135deg,#0284c7 0%,#06b6d4 100%)}
+h1{margin:0;padding:22px 16px;text-align:center;font-size:21px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.2)}
+nav{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+nav .col{padding:14px;display:flex;flex-direction:column;gap:4px}
+nav .col+.col{border-left:1px solid var(--bd);justify-content:center}
+nav button{all:unset;cursor:pointer;padding:9px 12px;border-radius:10px;font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.06em;color:var(--mut);transition:.15s}
+nav .col+.col button:hover{background:var(--bg);color:var(--tx)}
+nav .col+.col button.on{background:rgba(2,132,199,.12);color:var(--acc)}
+.hostel{font:inherit;font-weight:700;font-size:15px;padding:10px 12px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);width:100%;cursor:pointer}
+.hostel:focus,.bar select:focus,.rep input:focus,.rep select:focus{outline:2px solid var(--acc);outline-offset:1px}
+nav .sub{display:flex;flex-direction:row;gap:4px;background:var(--bg);padding:4px;border-radius:12px;margin:8px 0 0}
+nav .sub button{flex:1;text-align:center;padding:8px 4px}
+nav .sub button.on{background:var(--card);color:var(--acc);box-shadow:0 2px 8px rgba(2,100,150,.15)}
+.bar{display:flex;gap:10px;justify-content:center;padding:12px;overflow:visible}
+.bar select{font:inherit;font-weight:600;font-size:14px;padding:8px 14px;border:1.5px solid var(--bd);border-radius:999px;background:var(--card);color:var(--tx);cursor:pointer}
+.head,.row{display:grid;grid-template-columns:72px 1fr;align-items:center;padding:14px 16px;gap:10px}
+.head{color:var(--mut);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--bd);background:var(--bg)}
+.row{transition:background .15s}.row:hover{background:rgba(2,132,199,.05)}
+.row+.row{border-top:1px solid var(--bd)}
+.mid{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:rgba(2,132,199,.12);color:var(--acc);font-weight:800;font-size:16px}
+.st{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;justify-content:space-between;gap:14px;min-width:160px;border:1.5px solid var(--bd);border-radius:999px;padding:7px 12px 7px 16px;font-weight:700;font-size:14px}
+.sw{width:14px;height:14px;border-radius:50%}
+.red .pill{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4)}
+.amb .pill{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.5)}
+.grn .pill{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.45)}
+.red .sw{background:var(--red);box-shadow:0 0 0 0 rgba(239,68,68,.6);animation:pulse 1.8s infinite}
+.amb .sw{background:var(--amb);box-shadow:0 0 0 0 rgba(245,158,11,.6);animation:pulse 1.8s infinite}
+.grn .sw{background:var(--grn);box-shadow:0 0 8px var(--grn)}
+.blu .sw{background:var(--blu);box-shadow:0 0 8px var(--blu)}
+.blu .pill{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.45)}
+@keyframes pulse{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.mins{color:var(--mut);font-variant-numeric:tabular-nums;font-weight:600}
+.maint{padding:16px;border-left:5px solid var(--red)}
+.maint h2{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.maintList{display:flex;flex-wrap:wrap;gap:8px}
+.maintList div{padding:6px 14px;border-radius:999px;background:rgba(239,68,68,.1);font-weight:700}
+.rep{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px dashed var(--bd)}
+.rep select,.rep input{font:inherit;font-size:14px;padding:9px 12px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx)}
+.rep input{flex:1;min-width:150px}
+.rep button{font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border:0;border-radius:12px;background:linear-gradient(135deg,#0284c7,#06b6d4);color:#fff;cursor:pointer;transition:.15s}
+.rep button:hover{filter:brightness(1.08)}.rep button:disabled{opacity:.4;cursor:default}
+.empty{padding:36px 16px;text-align:center;color:var(--mut)}
+.foot{font-size:12px;color:var(--mut);text-align:center;margin-top:8px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--grn);margin-right:6px}
+.dot.off{background:var(--red)}
+/* laundry background: soap bubbles drifting up */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.8;background-size:320px 320px;animation:rise 60s linear infinite;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cdefs%3E%3CradialGradient id='b' cx='35%25' cy='30%25' r='70%25'%3E%3Cstop offset='0' stop-color='white' stop-opacity='.9'/%3E%3Cstop offset='.6' stop-color='%2360a5fa' stop-opacity='.1'/%3E%3Cstop offset='1' stop-color='%2360a5fa' stop-opacity='.3'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23b)' stroke='%2360a5fa' stroke-opacity='.4'%3E%3Ccircle cx='50' cy='60' r='26'/%3E%3Ccircle cx='140' cy='30' r='10'/%3E%3Ccircle cx='250' cy='80' r='34'/%3E%3Ccircle cx='90' cy='170' r='14'/%3E%3Ccircle cx='200' cy='200' r='22'/%3E%3Ccircle cx='290' cy='260' r='12'/%3E%3Ccircle cx='40' cy='270' r='30'/%3E%3Ccircle cx='150' cy='290' r='8'/%3E%3C/g%3E%3C/svg%3E")}
+@keyframes rise{to{background-position:0 -320px}}
+body{background:radial-gradient(900px 380px at 50% -140px,rgba(91,136,232,.18),transparent),radial-gradient(700px 380px at 0% 100%,rgba(6,182,212,.12),transparent),radial-gradient(600px 320px at 100% 60%,rgba(91,136,232,.08),transparent),#fff}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:150px;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 140' preserveAspectRatio='none'%3E%3Cpath fill='%235b88e8' fill-opacity='.12' d='M0 70C240 20 480 20 720 70S1200 120 1440 70V140H0Z'/%3E%3Cpath fill='%2306b6d4' fill-opacity='.09' d='M0 95C300 50 560 60 840 100S1260 120 1440 90V140H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* bold laundry background: water gradient, big bubbles + icons, strong waves */
+body{background:linear-gradient(180deg,#9fd0ff 0%,#d6ecff 38%,#f4faff 70%,#fff 100%)}
+body::before{opacity:1;background-size:360px 360px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg fill='%23ffffff' fill-opacity='.6' stroke='%233b82f6' stroke-opacity='.6' stroke-width='2'%3E%3Ccircle cx='300' cy='50' r='26'/%3E%3Ccircle cx='330' cy='95' r='12'/%3E%3Ccircle cx='30' cy='320' r='20'/%3E%3Ccircle cx='190' cy='330' r='10'/%3E%3Ccircle cx='320' cy='230' r='30'/%3E%3Ccircle cx='120' cy='140' r='9'/%3E%3C/g%3E%3Cg stroke='%23000000' stroke-opacity='.6' stroke-width='2'%3E%3Cpath d='M60 40C60 40 42 64 42 76a18 18 0 0 0 36 0C78 64 60 40 60 40Z'/%3E%3Cpath d='M200 50l-18 10 8 18 10-5v42h30v-42l10 5 8-18-18-10c-4 8-12 10-16 10s-12-2-16-10Z'/%3E%3Crect x='60' y='190' width='56' height='66' rx='8'/%3E%3Ccircle cx='88' cy='228' r='18'/%3E%3Cpath d='M74 202h0M88 202h20'/%3E%3Cpath d='M230 200c0 0-10 13-10 21a10 10 0 0 0 20 0c0-8-10-21-10-21Z'/%3E%3C/g%3E%3C/svg%3E")}
+body::after{height:230px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'%3E%3Cpath fill='%233b82f6' fill-opacity='.35' d='M0 90C240 30 480 30 720 90S1200 150 1440 90V200H0Z'/%3E%3Cpath fill='%2306b6d4' fill-opacity='.3' d='M0 125C300 70 560 85 840 130S1260 150 1440 115V200H0Z'/%3E%3Cpath fill='%235b88e8' fill-opacity='.4' d='M0 160C260 120 520 130 760 160S1220 185 1440 150V200H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* full-coverage laundry background: dense icons + bubbles everywhere, tall waves */
+body{background:linear-gradient(180deg,#7ab8ff 0%,#a6d4ff 45%,#cbe7ff 100%) fixed}
+body::before{opacity:1;background-size:240px 240px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg fill='%23ffffff' fill-opacity='.55' stroke='%23ffffff' stroke-opacity='.9' stroke-width='2'%3E%3Ccircle cx='125' cy='60' r='12'/%3E%3Ccircle cx='210' cy='215' r='26'/%3E%3Ccircle cx='115' cy='215' r='10'/%3E%3Ccircle cx='225' cy='120' r='8'/%3E%3Ccircle cx='20' cy='225' r='14'/%3E%3C/g%3E%3Cg stroke='%230b3a8a' stroke-opacity='.65' stroke-width='2.5'%3E%3Cpath d='M44 18C44 18 26 42 26 56a18 18 0 0 0 36 0C62 42 44 18 44 18Z'/%3E%3Cpath d='M170 30l-18 10 8 18 10-5v42h30v-42l10 5 8-18-18-10c-4 8-12 10-16 10s-12-2-16-10Z'/%3E%3Crect x='26' y='130' width='60' height='70' rx='9'/%3E%3Ccircle cx='56' cy='170' r='19'/%3E%3Cpath d='M40 143h0M56 143h22'/%3E%3Cpath d='M186 140c0 0-11 15-11 24a11 11 0 0 0 22 0c0-9-11-24-11-24Z'/%3E%3C/g%3E%3C/svg%3E")}
+body::after{height:42vh;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'%3E%3Cpath fill='%233b82f6' fill-opacity='.55' d='M0 70C240 10 480 10 720 70S1200 130 1440 70V200H0Z'/%3E%3Cpath fill='%2306b6d4' fill-opacity='.5' d='M0 115C300 60 560 75 840 120S1260 140 1440 105V200H0Z'/%3E%3Cpath fill='%231d4ed8' fill-opacity='.55' d='M0 160C260 120 520 130 760 160S1220 185 1440 150V200H0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:var(--bg)}}
+:root[data-theme="dark"] body{background:var(--bg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{filter:invert(1);opacity:.6}}
+/* royal blue boxes */
+:root{--acc:#5b88e8}
+.box{border:1.5px solid #5b88e8}
+.box.maint{border-left:5px solid var(--red)}
+.box.banner{border:0;background:linear-gradient(135deg,#3f6fd8 0%,#5b88e8 100%)}
+.rep button{background:linear-gradient(135deg,#3f6fd8,#5b88e8)}
+/* fully blue boxes, white text */
+.box{--card:#5b88e8;--tx:#fff;--mut:#e6eeff;--bd:rgba(255,255,255,.3);--bg:rgba(255,255,255,.14);background:#5b88e8;color:#fff;border:1.5px solid #3f6fd8}
+.box.banner{border:0}
+.box select option{color:#0b2a3c;background:#fff}
+.box select,.box input{color:#fff}
+.bar select{background:rgba(255,255,255,.14)}
+.box input::placeholder{color:#e6eeff}
+.box select:focus,.box input:focus{outline:2px solid #fff;outline-offset:1px}
+.pill,.red .pill,.amb .pill,.grn .pill,.blu .pill{background:#fff;color:#0b2a3c;border:0}
+.mid{background:#fff;color:#3f6fd8}
+.row:hover{background:rgba(255,255,255,.08)}
+nav .col+.col button.on,nav .sub button.on{background:#fff;color:#3f6fd8}
+nav .col+.col button:hover{background:rgba(255,255,255,.14);color:#fff}
+.maint h2{color:#fff}
+.maintList div{background:rgba(255,255,255,.16);color:#fff}
+.rep button{background:#fff;color:#3f6fd8}
+/* polish */
+.box{border-radius:20px;box-shadow:0 10px 28px rgba(40,90,200,.18)}
+.box.banner{position:relative}
+.box.banner::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 15%,rgba(255,255,255,.28),transparent 55%);pointer-events:none}
+h1{font-size:22px;position:relative}
+.pill{box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.prog{flex-basis:100%;height:6px;border-radius:99px;background:rgba(255,255,255,.28);overflow:hidden;margin-top:2px}
+.prog i{display:block;height:100%;border-radius:99px;background:#fff;transition:width .6s}
+nav button:focus-visible,.rep button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.rep button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-size:12.5px;font-weight:600;color:var(--mut);margin:-4px 0 14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%}
+.row{padding:15px 18px}.head{padding:12px 18px}
+/* ===== immersive water scene: glass cards over a live background ===== */
+body{background:linear-gradient(180deg,#0b4fc4 0%,#1f7fe8 45%,#4db6f5 100%) fixed!important}
+body::after{display:none}
+body::before{opacity:1!important;filter:none!important;background-size:240px 240px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%23ffffff' stroke-opacity='.2' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M44 18C44 18 26 42 26 56a18 18 0 0 0 36 0C62 42 44 18 44 18Z'/%3E%3Cpath d='M170 30l-18 10 8 18 10-5v42h30v-42l10 5 8-18-18-10c-4 8-12 10-16 10s-12-2-16-10Z'/%3E%3Crect x='26' y='130' width='60' height='70' rx='9'/%3E%3Ccircle cx='56' cy='170' r='19'/%3E%3Cpath d='M40 143h0M56 143h22'/%3E%3Cpath d='M186 140c0 0-11 15-11 24a11 11 0 0 0 22 0c0-9-11-24-11-24Z'/%3E%3C/svg%3E")}
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bg::before{content:"";position:absolute;inset:0;background:radial-gradient(640px 420px at 18% -4%,rgba(255,255,255,.38),transparent 70%),radial-gradient(520px 380px at 88% 2%,rgba(255,255,255,.24),transparent 70%)}
+.bubbles i{position:absolute;bottom:-90px;border-radius:50%;background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.95),rgba(255,255,255,.28) 38%,rgba(255,255,255,.08) 70%);border:1px solid rgba(255,255,255,.55);animation:bub linear infinite}
+@keyframes bub{to{transform:translate(var(--dx),-118vh)}}
+.waves{position:absolute;left:0;right:0;bottom:0;height:26vh}
+.waves div{position:absolute;left:0;right:0;bottom:0;background-repeat:repeat-x;background-size:1200px 100%}
+.w1{height:100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%23ffffff' fill-opacity='.35' d='M0 60C150 20 300 100 450 60S750 20 900 60S1050 100 1200 60V120H0Z'/%3E%3C/svg%3E");animation:wv 16s linear infinite}
+.w2{height:78%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%23aee4ff' fill-opacity='.45' d='M0 70C150 110 300 30 450 70S750 110 900 70S1050 30 1200 70V120H0Z'/%3E%3C/svg%3E");animation:wv 10s linear infinite reverse}
+@keyframes wv{to{background-position-x:1200px}}
+.box{background:rgba(12,70,176,.46);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1.5px solid rgba(255,255,255,.38);box-shadow:0 12px 32px rgba(3,30,90,.35)}
+.box.banner{background:linear-gradient(135deg,rgba(25,86,210,.9),rgba(70,140,240,.74));border:1.5px solid rgba(255,255,255,.5)}
+.wm{position:absolute;right:20px;top:50%;width:54px;height:54px;transform:translateY(-50%);z-index:1}
+.wm .drum{transform-origin:32px 38px;animation:spin 3.5s linear infinite}
+.dr{position:absolute;left:22px;top:50%;width:34px;height:44px;margin-top:-22px;z-index:1;animation:bob 3s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.legend,.foot{color:#eaf6ff}
+@media (max-width:480px){.dr{display:none}.wm{width:42px;height:42px;right:12px}}
+@media (prefers-reduced-motion:reduce){.bubbles i,.waves div,.wm .drum,.dr{animation:none}}
+/* ===== professional refinement: calm, clean, corporate water-blue ===== */
+body{background:linear-gradient(180deg,#0f3d91 0%,#1a5fc4 55%,#3b86d8 100%) fixed!important}
+body::before{opacity:.45!important}
+.bg::before{opacity:.5}
+.bubbles,.wm,.dr{display:none}
+.waves{height:18vh;opacity:.7}
+.w1{animation-duration:45s}.w2{animation-duration:30s}
+.box{background:rgba(14,58,140,.74);border:1px solid rgba(255,255,255,.22);border-radius:14px;box-shadow:0 8px 24px rgba(2,20,60,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.box.banner{background:linear-gradient(135deg,#1e4fb3,#2f6fd6);border:1px solid rgba(255,255,255,.25)}
+.box.banner::after{display:none}
+h1{font-size:20px;font-weight:700;letter-spacing:.14em;text-shadow:none}
+.pill{box-shadow:none}
+.mid{border-radius:10px}
+/* ===== plain white background ===== */
+body{background:#fff!important}
+body::before,body::after,.bg{display:none!important}
+.box{background:#5b88e8;border:1px solid #3f6fd8;box-shadow:0 6px 18px rgba(40,90,200,.18);-webkit-backdrop-filter:none;backdrop-filter:none}
+.box.banner{background:linear-gradient(135deg,#3f6fd8,#5b88e8);border:0}
+.legend,.foot{color:#4b647a}
+/* ===== richer visuals, white page kept ===== */
+.box{background:linear-gradient(160deg,#4672dc 0%,#5f8ce8 100%)}
+.box.banner{background:linear-gradient(135deg,#2f5fd0 0%,#4f82e6 60%,#38bdf8 100%);overflow:hidden}
+.box.banner::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 35%,rgba(255,255,255,.22) 0 24px,transparent 25px),radial-gradient(circle at 19% 78%,rgba(255,255,255,.16) 0 11px,transparent 12px),radial-gradient(circle at 88% 28%,rgba(255,255,255,.2) 0 32px,transparent 33px),radial-gradient(circle at 94% 82%,rgba(255,255,255,.15) 0 14px,transparent 15px)}
+.box.banner::after{display:block;content:"";position:absolute;left:0;right:0;bottom:0;height:46%;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 60' preserveAspectRatio='none'%3E%3Cpath fill='%23ffffff' fill-opacity='.2' d='M0 30C100 5 200 55 300 30S500 5 600 30V60H0Z'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+.row.blu{box-shadow:inset 4px 0 0 #7dd3fc}.row.grn{box-shadow:inset 4px 0 0 #4ade80}.row.amb{box-shadow:inset 4px 0 0 #fbbf24}.row.red{box-shadow:inset 4px 0 0 #f87171}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid transparent}
+.chip b{font-size:15px}
+.cav{background:#e0f2fe;color:#0369a1;border-color:#bae6fd}.crn{background:#fef3c7;color:#b45309;border-color:#fde68a}.cof{background:#fee2e2;color:#b91c1c;border-color:#fecaca}
+/* ===== refined official background: soft water-blue wash, calm waves, light laundry icons ===== */
+body{background:linear-gradient(180deg,#d6e6fb 0%,#eaf3fd 38%,#f8fbff 75%,#fff 100%) fixed!important}
+.bg{display:block!important}
+.bg::before{opacity:1;background:radial-gradient(560px 400px at 6% 0%,rgba(79,130,230,.2),transparent 70%),radial-gradient(500px 380px at 96% 6%,rgba(56,189,248,.18),transparent 70%)}
+body::before{display:block!important;opacity:1!important;background-size:240px 240px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%234672dc' stroke-opacity='.16' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M44 18C44 18 26 42 26 56a18 18 0 0 0 36 0C62 42 44 18 44 18Z'/%3E%3Cpath d='M170 30l-18 10 8 18 10-5v42h30v-42l10 5 8-18-18-10c-4 8-12 10-16 10s-12-2-16-10Z'/%3E%3Crect x='26' y='130' width='60' height='70' rx='9'/%3E%3Ccircle cx='56' cy='170' r='19'/%3E%3Cpath d='M40 143h0M56 143h22'/%3E%3Cpath d='M186 140c0 0-11 15-11 24a11 11 0 0 0 22 0c0-9-11-24-11-24Z'/%3E%3C/svg%3E")}
+.waves{height:30vh;opacity:1}
+.w1{animation:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%2393b8ee' fill-opacity='.38' d='M0 60C150 20 300 100 450 60S750 20 900 60S1050 100 1200 60V120H0Z'/%3E%3C/svg%3E")}
+.w2{animation:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%2360a5fa' fill-opacity='.24' d='M0 70C150 110 300 30 450 70S750 110 900 70S1050 30 1200 70V120H0Z'/%3E%3C/svg%3E")}
+/* ===== institutional look: Prussian blue + silver, header band, clean grey page ===== */
+body{background:#eef1f5!important}
+.waves{display:none}
+body::before{opacity:.55!important}
+.bg::before{opacity:1;inset:0 0 auto 0;height:260px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 2px,transparent 2px 16px),linear-gradient(180deg,#003153,#00416f);border-bottom:4px solid #c0c7d0}
+.box{background:linear-gradient(160deg,#0b4574 0%,#073a63 100%);border:1px solid #c0c7d0;border-radius:10px;box-shadow:0 6px 18px rgba(0,49,83,.22)}
+.box.banner{background:#003153;border:1px solid #c0c7d0;border-bottom:4px solid #c0c7d0}
+.box.banner::before,.box.banner::after{display:none}
+h1{letter-spacing:.12em}
+.mid,nav .col+.col button.on,nav .sub button.on,.rep button{color:#003153}
+.legend,.foot{color:#33475b}
+/* ===== richer institutional background: engineering grid, soft depth, textured header and footer bands ===== */
+body{position:relative;background:radial-gradient(700px 500px at 100% 38%,rgba(0,65,111,.12),transparent 70%),radial-gradient(620px 460px at 0% 72%,rgba(0,65,111,.10),transparent 70%),linear-gradient(rgba(0,49,83,.07) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,rgba(0,49,83,.07) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(180deg,#e6edf4 0%,#f4f7fa 50%,#dde5ee 100%)!important}
+body::before{opacity:.35!important}
+.bg{position:absolute;inset:0}
+.bg::before{background:repeating-radial-gradient(circle at 92% 130%,transparent 0 38px,rgba(255,255,255,.08) 38px 40px),repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px),radial-gradient(520px 240px at 12% 0%,rgba(192,199,208,.28),transparent 70%),linear-gradient(180deg,#003153,#00416f)}
+.bg::after{content:"Hostel Laundry Status";position:absolute;left:0;right:0;bottom:0;height:150px;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px),linear-gradient(180deg,#00416f,#003153);border-top:4px solid #c0c7d0;color:#c0c7d0;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.app{padding-bottom:190px}
+/* ===== hero scene: campus skyline by the lake at dusk, in Prussian blue and silver ===== */
+.bg::before{height:340px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 300' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23002a47'/%3E%3Cstop offset='.6' stop-color='%23065a96'/%3E%3Cstop offset='1' stop-color='%2377b4de'/%3E%3C/linearGradient%3E%3CradialGradient id='g' cx='.78' cy='.8' r='.5'%3E%3Cstop offset='0' stop-color='%23fff6d6' stop-opacity='.9'/%3E%3Cstop offset='1' stop-color='%23fff6d6' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='1440' height='300' fill='url(%23s)'/%3E%3Crect width='1440' height='300' fill='url(%23g)'/%3E%3Cpath fill='%230a4f86' fill-opacity='.55' d='M0 200C160 160 300 190 460 170S760 130 940 165 1250 150 1440 175V300H0Z'/%3E%3Cg fill='%23073e6b' fill-opacity='.88'%3E%3Crect x='60' y='170' width='60' height='80'/%3E%3Crect x='130' y='150' width='40' height='100'/%3E%3Crect x='180' y='185' width='80' height='65'/%3E%3Crect x='330' y='160' width='70' height='90'/%3E%3Crect x='410' y='140' width='34' height='110'/%3E%3Crect x='520' y='175' width='90' height='75'/%3E%3Crect x='640' y='155' width='50' height='95'/%3E%3Crect x='780' y='170' width='80' height='80'/%3E%3Crect x='880' y='135' width='36' height='115'/%3E%3Cpath d='M880 135l18-22 18 22Z'/%3E%3Crect x='1010' y='160' width='70' height='90'/%3E%3Crect x='1100' y='180' width='90' height='70'/%3E%3Crect x='1230' y='150' width='46' height='100'/%3E%3Crect x='1300' y='175' width='80' height='75'/%3E%3C/g%3E%3Cg fill='%23ffd98a' fill-opacity='.75'%3E%3Crect x='72' y='184' width='8' height='10'/%3E%3Crect x='92' y='204' width='8' height='10'/%3E%3Crect x='140' y='168' width='8' height='10'/%3E%3Crect x='140' y='200' width='8' height='10'/%3E%3Crect x='345' y='178' width='8' height='10'/%3E%3Crect x='372' y='210' width='8' height='10'/%3E%3Crect x='418' y='160' width='8' height='10'/%3E%3Crect x='540' y='192' width='8' height='10'/%3E%3Crect x='652' y='172' width='8' height='10'/%3E%3Crect x='800' y='188' width='8' height='10'/%3E%3Crect x='890' y='160' width='8' height='10'/%3E%3Crect x='1030' y='178' width='8' height='10'/%3E%3Crect x='1120' y='198' width='8' height='10'/%3E%3Crect x='1240' y='170' width='8' height='10'/%3E%3Crect x='1320' y='192' width='8' height='10'/%3E%3C/g%3E%3Cg fill='%23003153'%3E%3Cpath d='M0 250C120 235 240 245 360 238S600 232 720 240 1000 236 1140 242 1330 236 1440 244V300H0Z'/%3E%3Ccircle cx='90' cy='238' r='22'/%3E%3Ccircle cx='130' cy='244' r='16'/%3E%3Ccircle cx='470' cy='236' r='24'/%3E%3Ccircle cx='510' cy='242' r='16'/%3E%3Ccircle cx='820' cy='238' r='22'/%3E%3Ccircle cx='1180' cy='238' r='24'/%3E%3Ccircle cx='1220' cy='244' r='16'/%3E%3C/g%3E%3Cpath fill='%23ffffff' fill-opacity='.18' d='M0 270C120 262 240 278 360 270S600 262 720 270 1000 278 1140 270 1330 262 1440 270V300H0Z'/%3E%3Cpath fill='%23c0c7d0' fill-opacity='.35' d='M0 285C120 280 240 290 360 285S600 280 720 285 1000 290 1140 285 1330 280 1440 285V300H0Z'/%3E%3C/svg%3E") center bottom/cover no-repeat}
+.app{padding:190px 14px 190px}
+/* professional laundry background: faint line icons (droplet, shirt, washing machine), static */
+body::before{opacity:1;animation:none;background-size:240px 240px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%23000000' stroke-opacity='.5' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M40 30C40 30 26 48 26 58a14 14 0 0 0 28 0C54 48 40 30 40 30Z'/%3E%3Cpath d='M150 40l-14 8 6 14 8-4v34h24V58l8 4 6-14-14-8c-3 6-9 8-12 8s-9-2-12-8Z'/%3E%3Crect x='40' y='140' width='44' height='52' rx='6'/%3E%3Ccircle cx='62' cy='170' r='14'/%3E%3Cpath d='M50 150h0M62 150h16'/%3E%3Cpath d='M180 160c0 0-8 10-8 16a8 8 0 0 0 16 0c0-6-8-16-8-16Z'/%3E%3Ccircle cx='205' cy='215' r='7'/%3E%3Ccircle cx='125' cy='205' r='4'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
+.bottom{margin:18px 0 0;padding:22px 16px;border-radius:18px;text-align:center;font-size:21px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#0284c7 0%,#06b6d4 100%);box-shadow:var(--sh);text-shadow:0 2px 10px rgba(0,0,0,.2)}
+@media (max-width:420px){.pill{min-width:130px}nav .col{padding:10px}}
+
+.names .head,.names .row{grid-template-columns:1fr auto}.who{font-weight:700;font-size:16px}
+.panel{margin-bottom:34px}
+.side{padding:16px;position:sticky;top:16px;margin-bottom:0}
+.side h2{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.hitem{padding:11px 0;border-top:1px solid var(--bd);font-weight:600}.hitem:first-of-type{border-top:0}
+.hwhen{font-size:12px;color:var(--mut);font-weight:600;margin-bottom:2px}
+@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.side{position:static}}.panel:last-child{margin-bottom:0}
+</style></head><body><div class="bg" aria-hidden="true"><div class="bubbles"></div><div class="waves"><div class="w1"></div><div class="w2"></div></div></div><div class="app"><div class="main">
+<section class="panel" data-name="Laundry"></section>
+<section class="panel" data-name="WashWatch" data-all="1" data-hostels="1,3,5,7,9,12,14,16,18,21"></section>
+</div>
+</div>
+<script>
+/* ---------- SETTINGS ---------- */
+const SENSOR_URL = "";   // real mode: page requests SENSOR_URL + "?hostel=7"
+const REPORT_URL = "";   // optional: reports are POSTed here as {hostel,id,note}
+const POLL_MS = 5000;
+const GREEN_MAX = 10, YELLOW_MAX = 30;   // minutes left: 1-10 green, 11-30 yellow, above = red
+/* Sensor JSON for one hostel:
+ [{"id":"m1","kind":"washing","minutes":45}, {"id":"d4","kind":"drying","fault":true}, ...]
+ minutes = number read from the machine display (0/null = idle); fault:true = out of maintenance
+ Only M1-M5 (washing) and D1-D4 (drying) are shown. */
+
+/* ---------- DEMO DATA (shared by both sections, one set per hostel) ---------- */
+const SIMS = {};
+function makeHostel(){
+ const rnd=()=>Math.random()<.4?0:(Math.random()<.5?45:Math.ceil(Math.random()*20));
+ const l=[];
+ for(let i=1;i<=5;i++)l.push({id:"m"+i,kind:"washing",minutes:rnd()});
+ for(let i=1;i<=4;i++)l.push({id:"d"+i,kind:"drying",minutes:rnd()});
+ const f=l[Math.floor(Math.random()*l.length)];f.fault=true;delete f.minutes;
+ return l;
+}
+async function readSensors(h){
+ if(SENSOR_URL){const r=await fetch(SENSOR_URL+"?hostel="+h);return r.json();}
+ if(!SIMS[h])SIMS[h]=makeHostel();
+ return JSON.parse(JSON.stringify(SIMS[h]));
+}
+if(!SENSOR_URL)setInterval(()=>{Object.values(SIMS).forEach(l=>l.forEach(m=>{
+ if(m.fault)return;
+ if(m.minutes>0)m.minutes--; else if(Math.random()<.15)m.minutes=Math.random()<.5?45:15;}));},2000);
+
+/* ---------- HELPERS ---------- */
+const num=id=>parseInt(id.replace(/\D/g,""))||0;
+const esc=s=>s.replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
+/* Boys' hostels: 1, 5, 9, 14, 18. Girls' hostels: 3, 7, 12, 16, 21. Every hostel has its own names. */
+const HOSTEL_NAMES={
+ 1:["Aarav","Rohan","Kabir","Vikram","Arjun","Dev"],
+ 5:["Karan","Rahul","Aditya","Siddharth","Nikhil","Varun"],
+ 9:["Ishaan","Manav","Yash","Harsh","Tushar","Ayaan"],
+ 14:["Rishi","Pranav","Sameer","Kunal","Neel","Rajat"],
+ 18:["Mohit","Vivek","Ankit","Tanmay","Jay","Omkar"],
+ 3:["Priya","Ananya","Meera","Sneha","Isha","Neha"],
+ 7:["Diya","Kavya","Riya","Pooja","Tanvi","Aditi"],
+ 12:["Shreya","Nisha","Simran","Anjali","Divya","Kriti"],
+ 16:["Sanya","Mira","Pallavi","Ritika","Swara","Trisha"],
+ 21:["Vaidehi","Zoya","Naina","Ira","Aisha","Radhika"]};
+function namesView(h,f){   // demo names per hostel: replace with your real list
+ const rows=(HOSTEL_NAMES[h]||[]).map((name,i)=>({name,done:((h*3+i*5)%7)<3})).filter(p=>f==="done"?p.done:f==="not"?!p.done:true).map(({name,done})=>{
+  return `<div class="row ${done?"grn":"amb"}"><div class="who">${name}</div><div class="st ${done?"grn":"amb"}"><span class="pill">${done?"Done":"Not done"}<span class="sw"></span></span></div></div>`;}).join("");
+ return `<div class="box names"><div class="head"><div>Name</div><div>Status</div></div>${rows||'<div class="empty">No names.</div>'}</div>`;
+}
+function classify(m,rep){
+ if(m.fault||rep)return{c:"fault"};
+ const t=Number(m.minutes)||0;
+ if(t<=0)return{c:"blu",label:"Available",t:0};
+ if(t<=GREEN_MAX)return{c:"grn",label:"Almost done",t};
+ if(t<=YELLOW_MAX)return{c:"amb",label:"Short cycle",t};
+ return{c:"red",label:"Heavy cycle",t};
+}
+
+/* ---------- ONE INDEPENDENT SECTION ---------- */
+function makePanel(root){
+ root.innerHTML=`
+<div class="box banner"><svg class="dr" viewBox="0 0 40 52" aria-hidden="true"><path d="M20 3C20 3 5 24 5 34a15 15 0 0 0 30 0C35 24 20 3 20 3Z" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="2.5"/><path d="M13 36a8 8 0 0 0 7 8" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg><svg class="wm" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="4" width="52" height="56" rx="9" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="2.5"/><circle cx="14" cy="13" r="2" fill="#fff"/><path d="M22 13h26" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="38" r="17" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><g class="drum"><path d="M18 38c5-6 9 6 14 0s9 6 14 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="26" cy="31" r="2.5" fill="#fff"/><circle cx="38" cy="44" r="2" fill="#fff"/></g></svg><h1>${root.dataset.name}</h1></div>
+<div class="box"><nav>
+<div class="col">${root.dataset.all?`<button data-tab="current">Hostel</button>`:""}<select class="hostel" aria-label="Hostel"></select>
+${root.dataset.all?"":`<div class="sub"><button data-kind="washing">Washing</button><button data-kind="drying">Drying</button></div>`}</div>
+${root.dataset.all?`<div class="col"><button data-tab="updates">Updates</button><button data-tab="history">Your History</button></div>`:""}
+</nav></div>
+<div class="box bar">${root.dataset.all?`<select class="nfilter" aria-label="Filter"><option value="all">Filter: All</option><option value="done">Filter: Done</option><option value="not">Filter: Not done</option></select>`:""}<select class="sort" aria-label="Filter"${root.dataset.all?" hidden":""}><option value="all">Filter: All</option><option value="blu">Filter: Available</option><option value="grn">Filter: 0-10 min</option><option value="amb">Filter: 11-30 min</option><option value="red">Filter: 30+ min</option></select></div>
+${root.dataset.all?"":`<div class="legend"><span><i style="background:var(--blu)"></i>Available</span><span><i style="background:var(--grn)"></i>0-10 min</span><span><i style="background:var(--amb)"></i>11-30 min</span><span><i style="background:var(--red)"></i>30+ min</span></div>`}
+<div class="view"></div>
+<div class="box maint"><h2>Out of maintenance</h2><div class="maintList"></div>
+<div class="rep"><select class="repSel" aria-label="Machine to report"></select><input class="repNote" maxlength="80" placeholder="What’s wrong? (optional)"><button class="repBtn">Report machine</button></div>
+<p class="repMsg mins" style="margin:6px 0 0;font-size:13px"></p></div>
+<div class="foot"><span class="dot"></span><span class="src"></span></div>`;
+ const q=s=>root.querySelector(s), qa=s=>root.querySelectorAll(s);
+ const hostelSel=q(".hostel");
+ const HL=root.dataset.hostels?root.dataset.hostels.split(",").map(Number):Array.from({length:21},(_,i)=>i+1);
+ HL.forEach(i=>hostelSel.add(new Option("Hostel "+i,i)));
+ let data=[],hostel=HL[0],kind="washing",tab="current",lastOpts="";
+ const reports={};
+
+ function render(){
+  qa("nav button").forEach(b=>b.classList.toggle("on",b.dataset.kind?(tab==="current"&&b.dataset.kind===kind):b.dataset.tab===tab));
+  const showList=tab==="current", view=q(".view");
+  q(".bar").style.display=showList?"":"none";
+  q(".maint").style.display=showList&&!root.dataset.all?"":"none";
+  if(!showList){
+   const t={updates:"No new updates.",history:"Your past cycles will appear here."}[tab];
+   if(tab==="history"){view.innerHTML=`<div class="box names"><div class="head"><div>Date</div><div>Status</div></div>${[["Fri, 16 Oct","Not done"],["Tue, 13 Oct","Done"],["Sat, 10 Oct","Done"],["Wed, 7 Oct","Done"]].map(([d,s])=>`<div class="row ${s==="Done"?"grn":"amb"}"><div class="who">${d}</div><div class="st ${s==="Done"?"grn":"amb"}"><span class="pill">${s}<span class="sw"></span></span></div></div>`).join("")}</div>`;return;}
+   view.innerHTML=`<div class="box empty">${t}</div>`;return;}
+  const all=!!root.dataset.all;
+  if(all){view.innerHTML=namesView(hostel,q(".nfilter").value);return;}
+  const shown=m=>(all||m.kind===kind)&&(m.kind==="washing"?/^m[1-5]$/i:/^d[1-4]$/i).test(m.id);
+  const list=data.filter(shown).map(m=>({...m,...classify(m,reports[hostel+m.id])}));
+  const fv=q(".sort").value;
+  const ok=list.filter(m=>m.c!=="fault"&&(fv==="all"||m.c===fv));
+  const order={blu:["blu","grn","amb","red"],grn:["grn","amb","red","blu"],amb:["amb","grn","red","blu"],red:["red","amb","grn","blu"]}[q(".sort").value];
+  ok.sort(order?(a,b)=>order.indexOf(a.c)-order.indexOf(b.c)||a.t-b.t||num(a.id)-num(b.id):(a,b)=>num(a.id)-num(b.id));
+  const bad=list.filter(m=>m.c==="fault").sort((a,b)=>num(a.id)-num(b.id));
+  const nAv=list.filter(m=>m.c==="blu").length,nRun=list.filter(m=>["grn","amb","red"].includes(m.c)).length;
+  q(".maintList").innerHTML=bad.length?bad.map(m=>{const r=reports[hostel+m.id];
+   return `<div>${m.id.toUpperCase()}${r?` <span class="mins" style="font-weight:400">· reported${r.note?": "+esc(r.note):""}</span>`:""}</div>`}).join(""):`<div style="font-weight:400;color:var(--mut)">None</div>`;
+  const opts=list.filter(m=>m.c!=="fault").map(m=>`<option value="${m.id}">${m.id.toUpperCase()}</option>`).join("");
+  if(opts!==lastOpts){const rs=q(".repSel"),cur=rs.value;rs.innerHTML=opts;rs.value=cur;lastOpts=opts;}
+  q(".repBtn").disabled=!opts;
+  view.innerHTML=`<div class="stats"><span class="chip cav">Available <b>${nAv}</b></span><span class="chip crn">Running <b>${nRun}</b></span><span class="chip cof">Out of order <b>${bad.length}</b></span></div><div class="box"><div class="head"><div>${!all&&kind==="drying"?"Dryer":"Machine"}</div><div>Status | Time</div></div>`+
+   (ok.length?ok.map(m=>`<div class="row ${m.c}"><div class="mid">${m.id.toUpperCase()}</div><div class="st ${m.c}"><span class="pill">${m.label}<span class="sw"></span></span>${m.t?`<span class="mins">${m.t} mins</span><div class="prog"><i style="width:${Math.min(100,m.t/60*100)}%"></i></div>`:""}</div></div>`).join(""):`<div class="empty">No machines.</div>`)+`</div>`;
+ }
+
+ hostelSel.onchange=()=>{hostel=+hostelSel.value;tab="current";data=[];render();poll();};
+ qa("nav button").forEach(b=>b.onclick=()=>{
+  if(b.dataset.kind){kind=b.dataset.kind;tab="current";}else tab=b.dataset.tab;render();});
+ q(".sort").onchange=render;
+ if(q(".nfilter"))q(".nfilter").onchange=render;
+ q(".repBtn").onclick=async()=>{
+  const id=q(".repSel").value;if(!id)return;
+  const note=q(".repNote").value.trim(),h=hostel;
+  reports[h+id]={note};
+  let msg="Reported "+id.toUpperCase()+" in Hostel "+h+".";
+  if(REPORT_URL){try{await fetch(REPORT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({hostel:h,id,note})});}
+   catch(e){msg+=" (Couldn’t reach the server, so it’s saved on this device only.)";}}
+  q(".repNote").value="";q(".repMsg").textContent=msg;render();
+ };
+ async function poll(){
+  const h=hostel;
+  try{
+   const d=await readSensors(h);
+   if(h!==hostel)return;
+   data=d;q(".dot").className="dot";
+   q(".foot").style.display=SENSOR_URL?"":"none";q(".src").textContent="Live from sensors";
+  }catch(e){q(".dot").className="dot off";q(".src").textContent="Sensor feed unavailable";}
+  render();
+ }
+ poll();setInterval(poll,SENSOR_URL?POLL_MS:2000);
+}
+document.querySelectorAll(".panel").forEach(makePanel);
+(()=>{const c=document.querySelector(".bubbles");for(let i=0;i<28;i++){const b=document.createElement("i"),s=8+Math.random()*52;
+ b.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;animation-duration:${10+Math.random()*18}s;animation-delay:-${Math.random()*28}s;--dx:${Math.round(Math.random()*120-60)}px`;c.appendChild(b);}})();
+</script></body></html>
